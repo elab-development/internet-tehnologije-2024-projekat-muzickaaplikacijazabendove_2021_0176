@@ -2,6 +2,7 @@ import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 
 dotenv.config();
+
 const {
   JWT_SECRET = 'dev-secret',
   JWT_EXPIRES_IN = '7d',
@@ -9,6 +10,7 @@ const {
 } = process.env;
 
 export const JWT_COOKIE_NAME = COOKIE_NAME;
+
 export function signToken(payload) {
   return jwt.sign(payload, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN });
 }
