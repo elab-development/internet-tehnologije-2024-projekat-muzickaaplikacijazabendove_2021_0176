@@ -48,6 +48,16 @@ export default function Navbar() {
               Home
             </NavLink>
 
+            <NavLink
+              to='/bands'
+              end
+              className={({ isActive }) =>
+                `${linkBase} ${isActive ? active : ''}`
+              }
+            >
+              Bands
+            </NavLink>
+
             {unauthenticated && (
               <>
                 <NavLink
@@ -108,6 +118,17 @@ export default function Navbar() {
               }
             >
               Home
+            </NavLink>
+
+            <NavLink
+              to='/bands'
+              end
+              onClick={closeMobile}
+              className={({ isActive }) =>
+                `${linkBase} ${isActive ? active : ''}`
+              }
+            >
+              Bands
             </NavLink>
 
             {unauthenticated && (
