@@ -1,7 +1,8 @@
-import { useState, useMemo } from 'react';
+import { useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { Music2, Menu, X, LogOut } from 'lucide-react';
 import { useAuth } from '../context/AuthContext.jsx';
+import avatarPlaceholder from '../assets/avatar-placeholder.png';
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
@@ -10,15 +11,6 @@ export default function Navbar() {
   const linkBase =
     'block px-3 py-2 rounded-md text-sm font-medium transition hover:bg-red-600/20 hover:text-red-400';
   const active = 'text-red-400';
-
-  const initials = useMemo(() => {
-    const n = user?.name?.trim() || '';
-    if (!n) return 'U';
-    const parts = n.split(/\s+/);
-    const first = parts[0]?.[0] || '';
-    const last = parts.length > 1 ? parts[parts.length - 1][0] : '';
-    return (first + last).toUpperCase();
-  }, [user]);
 
   function closeMobile() {
     setOpen(false);
@@ -79,11 +71,7 @@ export default function Navbar() {
 
             {authenticated && (
               <div className='flex items-center gap-3 pl-2 ml-2 border-l border-white/10'>
-                <UserChip
-                  name={user?.name}
-                  avatarUrl={user?.avatarUrl}
-                  initials={initials}
-                />
+                <UserChip name={user?.name} avatarUrl={user?.avatarUrl} />
                 <button
                   onClick={handleLogout}
                   className='inline-flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium text-white/80 hover:text-white hover:bg-white/10 transition'
@@ -148,11 +136,7 @@ export default function Navbar() {
             {authenticated && (
               <div className='pt-2 mt-2 border-t border-white/10'>
                 <div className='flex items-center gap-3 px-2 py-2'>
-                  <UserChip
-                    name={user?.name}
-                    avatarUrl={user?.avatarUrl}
-                    initials={initials}
-                  />
+                  <UserChip name={user?.name} avatarUrl={user?.avatarUrl} />
                   <div className='text-sm text-white/80'>
                     <div className='font-medium'>{user?.name || 'User'}</div>
                     <div className='text-white/60'>{user?.email}</div>
@@ -180,21 +164,16 @@ export default function Navbar() {
   );
 }
 
-function UserChip({ name, avatarUrl, initials }) {
+function UserChip({ name, avatarUrl }) {
+  const src = avatarUrl || avatarPlaceholder;
   return (
     <div className='flex items-center gap-2'>
-      <div className='h-8 w-8 rounded-full bg-white/10 overflow-hidden grid place-items-center border border-white/10'>
-        {avatarUrl ? (
-          <img
-            src={avatarUrl}
-            alt={name || 'User avatar'}
-            className='h-full w-full object-cover'
-          />
-        ) : (
-          <span className='text-xs font-semibold text-white/80'>
-            {initials}
-          </span>
-        )}
+      <div className='h-8 w-8 rounded-full bg-white/10 overflow-hidden border border-white/10'>
+        <img
+          src={src}
+          alt={name || 'User avatar'}
+          className='h-full w-full object-cover'
+        />
       </div>
       <span className='hidden sm:block text-sm text-white/90 max-w-[14ch] truncate'>
         {name || 'User'}
