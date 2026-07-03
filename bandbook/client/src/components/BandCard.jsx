@@ -59,7 +59,6 @@ export default function BandCard({ band }) {
               title='Open YouTube channel'
             >
               <Youtube className='h-4 w-4 text-red-500' />
-              <code className='text-white/80'>{channelId}</code>
             </a>
           )}
         </div>

@@ -67,7 +67,7 @@ async function seedBands() {
       ],
       channelId: 'UCBVjMGOIkavEAhyqpxJ73Dw',
       avatarUrl:
-        'https://static.wikia.nocookie.net/whumpapedia/images/5/5d/Maroon_5.jpeg/revision/latest?cb=20211029190920',
+        'https://www.timeoutdubai.com/cloud/timeoutdubai/2024/12/06/maroon-5.jpg',
     },
     {
       name: 'Foo Fighters',
@@ -84,6 +84,92 @@ async function seedBands() {
       channelId: 'UCi2KNss4Yx73NG0JARSFe0A',
       avatarUrl:
         'https://yt3.googleusercontent.com/VrlcVJaXACfgIa5QCmabKv5pHqKsnE_TN7_6HqwEQB_C8Q6ZdzxaykLf8JPMiW2lMsXmuuHLwA=s900-c-k-c0x00ffffff-no-rj',
+    },
+    {
+      name: 'Linkin Park',
+      description:
+        'Genre-blending rock band combining heavy riffs, electronics and hip-hop elements; one of the best-selling artists of the 2000s.',
+      members: [
+        'Mike Shinoda (vocals, keys, guitar)',
+        'Brad Delson (guitar)',
+        'Dave “Phoenix” Farrell (bass)',
+        'Joe Hahn (turntables, samples)',
+        'Rob Bourdon (drums)',
+        'Chester Bennington (vocals; in memoriam)',
+      ],
+      channelId: 'UCZU9T1ceaOgwfLRq7OKFU4Q',
+      avatarUrl:
+        'https://cdn.sanity.io/images/x6mh5oiy/production/36b35304ed121ff7e29f333a450fea9628a42bfd-1920x1280.jpg',
+    },
+    {
+      name: 'The Killers',
+      description:
+        'Las Vegas indie/alt-rock outfit famed for widescreen anthems and synth-driven hooks.',
+      members: [
+        'Brandon Flowers (vocals, keys)',
+        'Dave Keuning (guitar)',
+        'Mark Stoermer (bass)',
+        'Ronnie Vannucci Jr. (drums)',
+      ],
+      channelId: 'UCkhyoTaWKuB-Rdbb6Z3Z5DA',
+      avatarUrl:
+        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQW3iFQkeDpqZk3XYAmOc86JHvTLLzah5rGxA&s',
+    },
+    {
+      name: 'Arctic Monkeys',
+      description:
+        'Sheffield band evolving from sharp indie rock to loungey, cinematic songwriting.',
+      members: [
+        'Alex Turner (vocals, guitar)',
+        'Jamie Cook (guitar)',
+        'Nick O’Malley (bass)',
+        'Matt Helders (drums)',
+      ],
+      channelId: 'UC-KTRBl9_6AX10-Y7IKwKdw',
+      avatarUrl:
+        'https://musicfeeds.com.au/wp-content/uploads/sites/7/Arctic-Monkeys-2018-Zackery-Michael.jpg',
+    },
+    {
+      name: 'Red Hot Chili Peppers',
+      description:
+        'Funk-rock pioneers mixing slap bass grooves with melodic alt-rock and psychedelic textures.',
+      members: [
+        'Anthony Kiedis (vocals)',
+        'Flea (bass)',
+        'John Frusciante (guitar)',
+        'Chad Smith (drums)',
+      ],
+      channelId: 'UCEuOwB9vSL1oPKGNdONB4ig',
+      avatarUrl:
+        'https://consequence.net/wp-content/uploads/2022/03/section-2-2-1.jpg',
+    },
+    {
+      name: 'Muse',
+      description:
+        'UK trio known for bombastic, cinematic rock blending prog, electronics and operatic vocals.',
+      members: [
+        'Matt Bellamy (vocals, guitar, keys)',
+        'Chris Wolstenholme (bass)',
+        'Dominic Howard (drums)',
+      ],
+      channelId: 'UCGGhM6XCSJFQ6DTRffnKRIw',
+      avatarUrl:
+        'https://www.nme.com/wp-content/uploads/2016/09/2015Muse_Press2_270115-1.jpg',
+    },
+    {
+      name: 'Radiohead',
+      description:
+        'Influential art-rock band pushing boundaries from guitar-driven alt-rock to experimental electronica.',
+      members: [
+        'Thom Yorke (vocals, guitar, keys)',
+        'Jonny Greenwood (guitar, keys)',
+        'Ed O’Brien (guitar, vocals)',
+        'Colin Greenwood (bass)',
+        'Philip Selway (drums)',
+      ],
+      channelId: 'UCq19-LqvG35A-30oyAiPiqA',
+      avatarUrl:
+        'https://cdn.britannica.com/98/162198-050-6452139D/Radiohead-business-models-British-performers-innovator-Internet-2012.jpg',
     },
   ];
 
