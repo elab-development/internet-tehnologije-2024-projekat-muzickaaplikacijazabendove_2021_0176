@@ -106,14 +106,12 @@ export const listBands = async (req, res) => {
     ...(q
       ? {
           OR: [
-            { name: { contains: q, mode: 'insensitive' } },
-            { description: { contains: q, mode: 'insensitive' } },
+            { name: { contains: q } }, // removed mode
+            { description: { contains: q } }, // removed mode
           ],
         }
       : {}),
-    ...(category
-      ? { category: { equals: category, mode: 'insensitive' } }
-      : {}),
+    ...(category ? { category: { equals: category } } : {}), // removed mode
   };
 
   let orderBy = [{ createdAt: 'desc' }];

@@ -1,8 +1,15 @@
-import { Users, Youtube, Music2 } from 'lucide-react';
+import { Users, Youtube, Music2, Tag } from 'lucide-react';
 import avatarPlaceholder from '../assets/avatar-placeholder.png';
 
 export default function BandCard({ band }) {
-  const { name, description, members = [], channelId, avatarUrl } = band || {};
+  const {
+    name,
+    description,
+    members = [],
+    channelId,
+    avatarUrl,
+    category,
+  } = band || {};
 
   const channelHref = channelId
     ? `https://www.youtube.com/channel/${channelId}`
@@ -20,6 +27,14 @@ export default function BandCard({ band }) {
 
       <div className='p-4'>
         <h3 className='font-semibold truncate'>{name || 'Untitled band'}</h3>
+
+        {/* Category badge */}
+        {category && (
+          <div className='mt-2 inline-flex items-center gap-1 rounded-md border border-white/10 bg-black/30 px-2 py-0.5 text-xs text-white/80'>
+            <Tag className='h-3.5 w-3.5 text-red-400' />
+            <span className='capitalize'>{category}</span>
+          </div>
+        )}
 
         <p className='mt-2 text-sm text-white/70 line-clamp-3'>
           {description || 'No description provided.'}
