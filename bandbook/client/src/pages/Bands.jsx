@@ -16,20 +16,18 @@ export default function Bands() {
   const { show, hide } = useLoading();
   const [items, setItems] = useState([]);
   const [page, setPage] = useState(1);
-  const [pageSize] = useState(12);
+  const [pageSize] = useState(6);
   const [totalPages, setTotalPages] = useState(1);
   const [error, setError] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState(''); // '' = all
+  const [selectedCategory, setSelectedCategory] = useState('');
 
   const categories = useMemo(() => {
-    // combine presets with categories present in current items
     const dynamic = Array.from(
       new Set(
         (items || []).map((b) => (b.category || '').trim()).filter(Boolean)
       )
     );
-    const merged = Array.from(new Set([...PRESET_CATEGORIES, ...dynamic]));
-    return merged;
+    return Array.from(new Set([...PRESET_CATEGORIES, ...dynamic]));
   }, [items]);
 
   const fetchPage = useCallback(
@@ -43,11 +41,7 @@ export default function Bands() {
         if (category) search.set('category', category);
 
         const data = await api(`/api/bands?${search.toString()}`);
-        if (nextPage === 1) {
-          setItems(data.items || []);
-        } else {
-          setItems((prev) => [...prev, ...(data.items || [])]);
-        }
+        setItems(data.items || []);
         setPage(data.page || nextPage);
         setTotalPages(data.totalPages || 1);
       } catch (err) {
@@ -59,12 +53,15 @@ export default function Bands() {
     [pageSize, selectedCategory, show, hide]
   );
 
-  // initial + whenever category changes
+  // initial load + whenever category changes
   useEffect(() => {
     fetchPage(1, selectedCategory);
   }, [fetchPage, selectedCategory]);
 
-  const canLoadMore = page < totalPages;
+  function goTo(p) {
+    if (p < 1 || p > totalPages || p === page) return;
+    fetchPage(p);
+  }
 
   return (
     <section className='space-y-6'>
@@ -106,15 +103,9 @@ export default function Bands() {
         ))}
       </div>
 
-      {canLoadMore && (
-        <div className='flex justify-center pt-2'>
-          <button
-            onClick={() => fetchPage(page + 1)}
-            className='inline-flex items-center justify-center rounded-md bg-red-600 hover:bg-red-500 transition px-4 py-2 font-medium'
-          >
-            Load more
-          </button>
-        </div>
+      {/* Pagination */}
+      {totalPages > 1 && (
+        <Pagination current={page} total={totalPages} onChange={goTo} />
       )}
 
       {!error && items.length === 0 && (
@@ -138,4 +129,82 @@ function FilterPill({ label, active, onClick }) {
       <span className='capitalize'>{label}</span>
     </button>
   );
+}
+
+function Pagination({ current, total, onChange }) {
+  // build a compact page range (1 … n)
+  const pages = buildPageRange(current, total);
+
+  return (
+    <nav
+      className='mt-4 flex items-center justify-center gap-2'
+      aria-label='Pagination'
+    >
+      <button
+        onClick={() => onChange(current - 1)}
+        disabled={current === 1}
+        className={[
+          'px-3 py-1.5 rounded-md border text-sm',
+          current === 1
+            ? 'border-white/10 text-white/40 cursor-not-allowed'
+            : 'border-white/10 text-white/80 hover:bg-white/10',
+        ].join(' ')}
+      >
+        Prev
+      </button>
+
+      {pages.map((p, i) =>
+        p === '...' ? (
+          <span
+            key={`ellipsis-${i}`}
+            className='px-2 text-white/50 select-none'
+          >
+            …
+          </span>
+        ) : (
+          <button
+            key={p}
+            onClick={() => onChange(p)}
+            className={[
+              'w-9 h-9 rounded-md border text-sm',
+              p === current
+                ? 'bg-red-600 border-red-500 text-white'
+                : 'bg-white/5 border-white/10 text-white/80 hover:bg-white/10',
+            ].join(' ')}
+          >
+            {p}
+          </button>
+        )
+      )}
+
+      <button
+        onClick={() => onChange(current + 1)}
+        disabled={current === total}
+        className={[
+          'px-3 py-1.5 rounded-md border text-sm',
+          current === total
+            ? 'border-white/10 text-white/40 cursor-not-allowed'
+            : 'border-white/10 text-white/80 hover:bg-white/10',
+        ].join(' ')}
+      >
+        Next
+      </button>
+    </nav>
+  );
+}
+
+function buildPageRange(current, total) {
+  const pages = [];
+  const delta = 1; // how many neighbors to show around current
+
+  const left = Math.max(2, current - delta);
+  const right = Math.min(total - 1, current + delta);
+
+  pages.push(1);
+  if (left > 2) pages.push('...');
+  for (let p = left; p <= right; p++) pages.push(p);
+  if (right < total - 1) pages.push('...');
+  if (total > 1) pages.push(total);
+
+  return Array.from(new Set(pages.filter(Boolean)));
 }
