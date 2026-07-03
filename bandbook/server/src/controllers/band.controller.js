@@ -7,6 +7,7 @@
  *  - members:     JSON array of strings (required)
  *  - channelId:   string (required, unique) — official YouTube channel ID
  *  - avatarUrl:   string (optional) — Cloudinary or remote URL
+ *  - category:    string (optional) — e.g. "rock", "pop", "wedding", ...
  *
  * Endpoints:
  * - GET    /api/bands
@@ -16,6 +17,7 @@
  *        page?=number        — default 1
  *        pageSize?=number    — default 12 (max 100)
  *        sort?=string        — one of: "new", "name-asc", "name-desc"
+ *        category?=string
  *      Response: { items, page, pageSize, total, totalPages }
  *
  * - GET    /api/bands/:id
@@ -98,15 +100,21 @@ export const listBands = async (req, res) => {
   const pageSize = Math.min(100, Math.max(1, Number(req.query.pageSize) || 12));
   const q = String(req.query.q || '').trim();
   const sort = String(req.query.sort || 'new');
+  const category = String(req.query.category || '').trim();
 
-  const where = q
-    ? {
-        OR: [
-          { name: { contains: q, mode: 'insensitive' } },
-          { description: { contains: q, mode: 'insensitive' } },
-        ],
-      }
-    : {};
+  const where = {
+    ...(q
+      ? {
+          OR: [
+            { name: { contains: q, mode: 'insensitive' } },
+            { description: { contains: q, mode: 'insensitive' } },
+          ],
+        }
+      : {}),
+    ...(category
+      ? { category: { equals: category, mode: 'insensitive' } }
+      : {}),
+  };
 
   let orderBy = [{ createdAt: 'desc' }];
   if (sort === 'name-asc') orderBy = [{ name: 'asc' }];
@@ -149,7 +157,8 @@ export const getBand = async (req, res) => {
  */
 export const createBand = async (req, res) => {
   try {
-    const { name, description, members, channelId, avatarUrl } = req.body || {};
+    const { name, description, members, channelId, avatarUrl, category } =
+      req.body || {};
     if (!name || !description || !channelId) {
       return res
         .status(400)
@@ -167,12 +176,12 @@ export const createBand = async (req, res) => {
         members: membersArr,
         channelId: String(channelId).trim(),
         avatarUrl: finalAvatarUrl ?? null,
+        category: category ? String(category).trim() : null,
       },
     });
 
     return res.status(201).json({ band: created });
   } catch (err) {
-    // Handle unique channelId violations etc.
     return res
       .status(400)
       .json({ error: err.message || 'Failed to create band' });
@@ -190,7 +199,8 @@ export const updateBand = async (req, res) => {
   if (!id) return res.status(400).json({ error: 'Invalid id' });
 
   try {
-    const { name, description, members, channelId, avatarUrl } = req.body || {};
+    const { name, description, members, channelId, avatarUrl, category } =
+      req.body || {};
     const patch = {};
 
     if (name !== undefined) patch.name = String(name).trim();
@@ -198,8 +208,9 @@ export const updateBand = async (req, res) => {
       patch.description = String(description).trim();
     if (members !== undefined) patch.members = parseMembers(members);
     if (channelId !== undefined) patch.channelId = String(channelId).trim();
+    if (category !== undefined)
+      patch.category = category ? String(category).trim() : null;
 
-    // prefer resolved Cloudinary URL if middleware uploaded a new file
     if (req.avatarUrl !== undefined) {
       patch.avatarUrl = req.avatarUrl ?? null;
     } else if (avatarUrl !== undefined) {

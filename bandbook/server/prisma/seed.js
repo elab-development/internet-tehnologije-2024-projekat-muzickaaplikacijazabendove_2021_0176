@@ -38,6 +38,7 @@ async function seedBands() {
       ],
       channelId: 'UCDPM_n1atn2ijUwHd0NNRQw',
       avatarUrl: 'https://api.time.com/wp-content/uploads/2023/11/COLDPLAY.jpg',
+      category: 'pop-rock',
     },
     {
       name: 'Imagine Dragons',
@@ -52,6 +53,7 @@ async function seedBands() {
       channelId: 'UCT9zcQNlyht7fRlcjmflRSA',
       avatarUrl:
         'https://concord.com/wp-content/uploads/2021/01/imaginedragons.jpg',
+      category: 'alternative rock',
     },
     {
       name: 'Maroon 5',
@@ -68,6 +70,7 @@ async function seedBands() {
       channelId: 'UCBVjMGOIkavEAhyqpxJ73Dw',
       avatarUrl:
         'https://www.timeoutdubai.com/cloud/timeoutdubai/2024/12/06/maroon-5.jpg',
+      category: 'pop',
     },
     {
       name: 'Foo Fighters',
@@ -84,6 +87,7 @@ async function seedBands() {
       channelId: 'UCi2KNss4Yx73NG0JARSFe0A',
       avatarUrl:
         'https://yt3.googleusercontent.com/VrlcVJaXACfgIa5QCmabKv5pHqKsnE_TN7_6HqwEQB_C8Q6ZdzxaykLf8JPMiW2lMsXmuuHLwA=s900-c-k-c0x00ffffff-no-rj',
+      category: 'alternative rock',
     },
     {
       name: 'Linkin Park',
@@ -100,6 +104,7 @@ async function seedBands() {
       channelId: 'UCZU9T1ceaOgwfLRq7OKFU4Q',
       avatarUrl:
         'https://cdn.sanity.io/images/x6mh5oiy/production/36b35304ed121ff7e29f333a450fea9628a42bfd-1920x1280.jpg',
+      category: 'alternative rock',
     },
     {
       name: 'The Killers',
@@ -114,6 +119,7 @@ async function seedBands() {
       channelId: 'UCkhyoTaWKuB-Rdbb6Z3Z5DA',
       avatarUrl:
         'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQW3iFQkeDpqZk3XYAmOc86JHvTLLzah5rGxA&s',
+      category: 'indie rock',
     },
     {
       name: 'Arctic Monkeys',
@@ -128,6 +134,7 @@ async function seedBands() {
       channelId: 'UC-KTRBl9_6AX10-Y7IKwKdw',
       avatarUrl:
         'https://musicfeeds.com.au/wp-content/uploads/sites/7/Arctic-Monkeys-2018-Zackery-Michael.jpg',
+      category: 'indie rock',
     },
     {
       name: 'Red Hot Chili Peppers',
@@ -142,6 +149,7 @@ async function seedBands() {
       channelId: 'UCEuOwB9vSL1oPKGNdONB4ig',
       avatarUrl:
         'https://consequence.net/wp-content/uploads/2022/03/section-2-2-1.jpg',
+      category: 'funk rock',
     },
     {
       name: 'Muse',
@@ -155,6 +163,7 @@ async function seedBands() {
       channelId: 'UCGGhM6XCSJFQ6DTRffnKRIw',
       avatarUrl:
         'https://www.nme.com/wp-content/uploads/2016/09/2015Muse_Press2_270115-1.jpg',
+      category: 'alternative rock',
     },
     {
       name: 'Radiohead',
@@ -170,6 +179,7 @@ async function seedBands() {
       channelId: 'UCq19-LqvG35A-30oyAiPiqA',
       avatarUrl:
         'https://cdn.britannica.com/98/162198-050-6452139D/Radiohead-business-models-British-performers-innovator-Internet-2012.jpg',
+      category: 'art rock',
     },
   ];
 
