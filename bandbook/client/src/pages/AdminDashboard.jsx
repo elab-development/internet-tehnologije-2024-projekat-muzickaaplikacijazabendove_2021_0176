@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import AdminTabs from '../components/admin/AdminTabs.jsx';
 import BandsManager from '../components/admin/BandsManager.jsx';
+import UsersManager from '../components/admin/UsersManager.jsx';
 
 export default function AdminDashboard() {
   const [tab, setTab] = useState('bands');
@@ -17,15 +18,7 @@ export default function AdminDashboard() {
         <AdminTabs value={tab} onChange={setTab} />
       </header>
 
-      {tab === 'bands' ? <BandsManager /> : <UsersPlaceholder />}
+      {tab === 'bands' ? <BandsManager /> : <UsersManager />}
     </section>
-  );
-}
-
-function UsersPlaceholder() {
-  return (
-    <div className='rounded-xl border border-white/10 bg-white/5 p-6'>
-      <p className='text-white/80'>Users management coming soon.</p>
-    </div>
   );
 }
