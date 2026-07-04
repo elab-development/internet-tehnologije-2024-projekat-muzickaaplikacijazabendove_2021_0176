@@ -7,6 +7,7 @@ import dotenv from 'dotenv';
 import { prisma } from './lib/prisma.js';
 import authRoutes from './routes/auth.routes.js';
 import bandRoutes from './routes/band.routes.js';
+import userRouter from './routes/user.routes.js';
 
 dotenv.config();
 
@@ -30,6 +31,7 @@ app.get('/health', async (_req, res) => {
 
 app.use('/api/auth', authRoutes);
 app.use('/api/bands', bandRoutes);
+app.use('/api/users', userRouter);
 
 const PORT = Number(process.env.PORT || 4000);
 app.listen(PORT, () => {
