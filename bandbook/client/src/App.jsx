@@ -5,6 +5,7 @@ import Home from './pages/Home.jsx';
 import Bands from './pages/Bands.jsx';
 import Login from './pages/Login.jsx';
 import Register from './pages/Register.jsx';
+import Account from './pages/Account.jsx';
 import AdminDashboard from './pages/AdminDashboard.jsx';
 
 export default function App() {
@@ -15,6 +16,7 @@ export default function App() {
         <Route path='/bands' element={<Bands />} />
         <Route path='/login' element={<Login />} />
         <Route path='/register' element={<Register />} />
+        <Route path='/account' element={<Account />} />
         <Route path='/admin' element={<AdminDashboard />} />
       </Route>
     </Routes>

@@ -94,7 +94,9 @@ export default function Navbar() {
 
             {authenticated && (
               <div className='flex items-center gap-3 pl-2 ml-2 border-l border-white/10'>
-                <UserChip name={user?.name} avatarUrl={user?.avatarUrl} />
+                <Link to='/account' className='focus:outline-none'>
+                  <UserChip name={user?.name} avatarUrl={user?.avatarUrl} />
+                </Link>
                 <button
                   onClick={handleLogout}
                   className='inline-flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium text-white/80 hover:text-white hover:bg-white/10 transition'
@@ -181,13 +183,17 @@ export default function Navbar() {
 
             {authenticated && (
               <div className='pt-2 mt-2 border-t border-white/10'>
-                <div className='flex items-center gap-3 px-2 py-2'>
+                <Link
+                  to='/account'
+                  onClick={closeMobile}
+                  className='flex items-center gap-3 px-2 py-2'
+                >
                   <UserChip name={user?.name} avatarUrl={user?.avatarUrl} />
                   <div className='text-sm text-white/80'>
                     <div className='font-medium'>{user?.name || 'User'}</div>
                     <div className='text-white/60'>{user?.email}</div>
                   </div>
-                </div>
+                </Link>
                 <button
                   onClick={handleLogout}
                   className='w-full text-left px-3 py-2 rounded-md text-sm font-medium text-white/80 hover:text-white hover:bg-white/10 transition inline-flex items-center gap-2'
