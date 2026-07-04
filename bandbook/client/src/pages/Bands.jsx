@@ -2,6 +2,7 @@ import { useEffect, useState, useCallback, useMemo } from 'react';
 import { api } from '../lib/api.js';
 import { useLoading } from '../context/LoadingContext.jsx';
 import BandCard from '../components/BandCard.jsx';
+import { Search, X } from 'lucide-react';
 
 const PRESET_CATEGORIES = [
   'pop-rock',
@@ -20,6 +21,7 @@ export default function Bands() {
   const [totalPages, setTotalPages] = useState(1);
   const [error, setError] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
+  const [query, setQuery] = useState('');
 
   const categories = useMemo(() => {
     const dynamic = Array.from(
@@ -31,7 +33,7 @@ export default function Bands() {
   }, [items]);
 
   const fetchPage = useCallback(
-    async (nextPage = 1, category = selectedCategory) => {
+    async (nextPage = 1, category = selectedCategory, q = query) => {
       setError('');
       show();
       try {
@@ -39,6 +41,7 @@ export default function Bands() {
         search.set('page', String(nextPage));
         search.set('pageSize', String(pageSize));
         if (category) search.set('category', category);
+        if (q) search.set('q', q);
 
         const data = await api(`/api/bands?${search.toString()}`);
         setItems(data.items || []);
@@ -50,17 +53,21 @@ export default function Bands() {
         hide();
       }
     },
-    [pageSize, selectedCategory, show, hide]
+    [pageSize, selectedCategory, query, show, hide]
   );
 
-  // initial load + whenever category changes
+  // initial + whenever category or query changes
   useEffect(() => {
-    fetchPage(1, selectedCategory);
-  }, [fetchPage, selectedCategory]);
+    fetchPage(1, selectedCategory, query);
+  }, [fetchPage, selectedCategory, query]);
 
   function goTo(p) {
     if (p < 1 || p > totalPages || p === page) return;
     fetchPage(p);
+  }
+
+  function clearSearch() {
+    setQuery('');
   }
 
   return (
@@ -74,21 +81,45 @@ export default function Bands() {
         </p>
       </header>
 
-      {/* Category filters */}
-      <div className='flex flex-wrap items-center justify-center gap-2'>
-        <FilterPill
-          label='All'
-          active={!selectedCategory}
-          onClick={() => setSelectedCategory('')}
-        />
-        {categories.map((cat) => (
-          <FilterPill
-            key={cat}
-            label={cat}
-            active={selectedCategory === cat}
-            onClick={() => setSelectedCategory(cat)}
+      {/* Search + Category filters */}
+      <div className='flex flex-col items-center gap-3'>
+        {/* Search bar  */}
+        <div className='w-full max-w-xl relative'>
+          <Search className='absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-white/60' />
+          <input
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder='Search bands (name, description)…'
+            className='w-full pl-10 pr-10 py-2 rounded-md bg-black border border-white/10 text-sm outline-none focus:border-red-500'
           />
-        ))}
+          {query && (
+            <button
+              onClick={clearSearch}
+              className='absolute right-2 top-1/2 -translate-y-1/2 p-1 rounded hover:bg-white/10'
+              aria-label='Clear search'
+              title='Clear search'
+            >
+              <X className='h-4 w-4 text-white/70' />
+            </button>
+          )}
+        </div>
+
+        {/* Category filters */}
+        <div className='flex flex-wrap items-center justify-center gap-2'>
+          <FilterPill
+            label='All'
+            active={!selectedCategory}
+            onClick={() => setSelectedCategory('')}
+          />
+          {categories.map((cat) => (
+            <FilterPill
+              key={cat}
+              label={cat}
+              active={selectedCategory === cat}
+              onClick={() => setSelectedCategory(cat)}
+            />
+          ))}
+        </div>
       </div>
 
       {error && (
@@ -132,7 +163,6 @@ function FilterPill({ label, active, onClick }) {
 }
 
 function Pagination({ current, total, onChange }) {
-  // build a compact page range (1 … n)
   const pages = buildPageRange(current, total);
 
   return (
@@ -195,8 +225,7 @@ function Pagination({ current, total, onChange }) {
 
 function buildPageRange(current, total) {
   const pages = [];
-  const delta = 1; // how many neighbors to show around current
-
+  const delta = 1;
   const left = Math.max(2, current - delta);
   const right = Math.min(total - 1, current + delta);
 
