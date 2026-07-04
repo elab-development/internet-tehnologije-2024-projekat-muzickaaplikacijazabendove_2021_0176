@@ -24,6 +24,8 @@ export default function Navbar() {
     }
   }
 
+  const isAdmin = authenticated && user?.role === 'ADMIN';
+
   return (
     <header className='sticky top-0 z-50 border-b border-white/10 bg-black/80 backdrop-blur supports-[backdrop-filter]:bg-black/60'>
       <div className='mx-auto max-w-6xl px-4'>
@@ -57,6 +59,17 @@ export default function Navbar() {
             >
               Bands
             </NavLink>
+
+            {isAdmin && (
+              <NavLink
+                to='/admin'
+                className={({ isActive }) =>
+                  `${linkBase} ${isActive ? active : ''}`
+                }
+              >
+                Admin Dashboard
+              </NavLink>
+            )}
 
             {unauthenticated && (
               <>
@@ -130,6 +143,18 @@ export default function Navbar() {
             >
               Bands
             </NavLink>
+
+            {isAdmin && (
+              <NavLink
+                to='/admin'
+                onClick={closeMobile}
+                className={({ isActive }) =>
+                  `${linkBase} ${isActive ? active : ''}`
+                }
+              >
+                Admin Dashboard
+              </NavLink>
+            )}
 
             {unauthenticated && (
               <>
