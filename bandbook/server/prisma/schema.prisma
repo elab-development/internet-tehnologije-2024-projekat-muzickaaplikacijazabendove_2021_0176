@@ -3,9 +3,9 @@
 
 // Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
 generator client {
   provider = "prisma-client-js"
-
 }
 
 datasource db {
@@ -28,6 +28,8 @@ model User {
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
 
+  reviews      Review[]
+
   @@index([email])
 }
 
@@ -42,10 +44,27 @@ model Band {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
+  reviews     Review[]
+
   @@index([name])
   @@index([createdAt])
   @@index([category])
   @@fulltext([name, description])
 }
 
+model Review {
+  id        Int      @id @default(autoincrement())
+  bandId    Int
+  userId    Int
+  rating    Int      
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
+  band      Band     @relation(fields: [bandId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([bandId])
+  @@index([userId])
+  @@index([createdAt])
+  @@unique([bandId, userId]) 
+}
