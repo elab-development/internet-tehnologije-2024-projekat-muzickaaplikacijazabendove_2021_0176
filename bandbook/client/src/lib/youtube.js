@@ -5,7 +5,6 @@ export async function fetchChannelVideos(
   { pageToken = '', pageSize = 6 } = {}
 ) {
   if (!YT_KEY) throw new Error('Missing VITE_GOOGLE_API_KEY');
-  console.log('YT_KEY', YT_KEY);
   const params = new URLSearchParams({
     part: 'snippet',
     channelId,
