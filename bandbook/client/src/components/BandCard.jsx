@@ -1,8 +1,10 @@
+import { Link } from 'react-router-dom';
 import { Users, Youtube, Music2, Tag } from 'lucide-react';
 import avatarPlaceholder from '../assets/avatar-placeholder.png';
 
 export default function BandCard({ band }) {
   const {
+    id,
     name,
     description,
     members = [],
@@ -14,21 +16,29 @@ export default function BandCard({ band }) {
   const channelHref = channelId
     ? `https://www.youtube.com/channel/${channelId}`
     : null;
+  const detailsHref = id ? `/bands/${id}` : '#';
 
   return (
     <div className='group rounded-xl border border-white/10 bg-white/5 hover:border-red-500/50 transition overflow-hidden'>
-      <div className='w-full h-40 sm:h-48 bg-white/5 border-b border-white/10 overflow-hidden'>
+      <Link
+        to={detailsHref}
+        className='block w-full h-40 sm:h-48 bg-white/5 border-b border-white/10 overflow-hidden'
+      >
         <img
           src={avatarUrl || avatarPlaceholder}
           alt={`${name || 'Band'} avatar`}
-          className='h-full w-full object-cover'
+          className='h-full w-full object-cover group-hover:scale-[1.02] transition'
         />
-      </div>
+      </Link>
 
       <div className='p-4'>
-        <h3 className='font-semibold truncate'>{name || 'Untitled band'}</h3>
+        <Link
+          to={detailsHref}
+          className='font-semibold truncate hover:text-red-400 transition block'
+        >
+          {name || 'Untitled band'}
+        </Link>
 
-        {/* Category badge */}
         {category && (
           <div className='mt-2 inline-flex items-center gap-1 rounded-md border border-white/10 bg-black/30 px-2 py-0.5 text-xs text-white/80'>
             <Tag className='h-3.5 w-3.5 text-red-400' />
