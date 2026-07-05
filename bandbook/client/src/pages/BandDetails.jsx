@@ -1,15 +1,24 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { api } from '../lib/api.js';
 import { useLoading } from '../context/LoadingContext.jsx';
-import { Users, Youtube, Tag, ArrowLeft } from 'lucide-react';
+import { Users, Youtube, Tag, ArrowLeft, Star } from 'lucide-react';
 import avatarPlaceholder from '../assets/avatar-placeholder.png';
+import BandSongsTab from '../components/BandSongsTab.jsx';
+import BandReviewsTab from '../components/BandReviewsTab.jsx';
 
 export default function BandDetails() {
   const { id } = useParams();
   const { show, hide } = useLoading();
   const [band, setBand] = useState(null);
   const [error, setError] = useState('');
+  const [tab, setTab] = useState('reviews');
+  const [ratingSummary, setRatingSummary] = useState({ avg: 0, count: 0 });
+
+  const handleSummary = useCallback(
+    (s) => setRatingSummary(s || { avg: 0, count: 0 }),
+    []
+  );
 
   useEffect(() => {
     let mounted = true;
@@ -46,7 +55,6 @@ export default function BandDetails() {
       </section>
     );
   }
-
   if (!band) return null;
 
   const {
@@ -88,7 +96,6 @@ export default function BandDetails() {
           <h1 className='text-3xl sm:text-4xl font-bold'>
             {name || 'Untitled band'}
           </h1>
-
           <div className='mt-2 flex flex-wrap items-center gap-3 text-sm text-white/80'>
             {category && (
               <span className='inline-flex items-center gap-1 rounded-md border border-white/10 bg-black/30 px-2 py-0.5 text-xs'>
@@ -101,6 +108,18 @@ export default function BandDetails() {
                 Added on {new Date(createdAt).toLocaleDateString()}
               </span>
             )}
+            {/* rating summary */}
+            <span className='inline-flex items-center gap-1 text-xs ml-0 sm:ml-2'>
+              <Star className='h-4 w-4 text-yellow-400' />
+              {ratingSummary.count > 0 ? (
+                <>
+                  <span>{ratingSummary.avg.toFixed(1)}/5</span>
+                  <span className='text-white/50'>({ratingSummary.count})</span>
+                </>
+              ) : (
+                <span className='text-white/60'>No ratings yet</span>
+              )}
+            </span>
           </div>
         </div>
 
@@ -146,6 +165,45 @@ export default function BandDetails() {
           <p className='mt-2 text-sm text-white/60'>No members listed.</p>
         )}
       </section>
+
+      {/* Tabs */}
+      <section className='space-y-4'>
+        <div className='flex items-center gap-2'>
+          <TabButton active={tab === 'songs'} onClick={() => setTab('songs')}>
+            Songs
+          </TabButton>
+          <TabButton
+            active={tab === 'reviews'}
+            onClick={() => setTab('reviews')}
+          >
+            Reviews
+          </TabButton>
+        </div>
+
+        <div>
+          {tab === 'songs' ? (
+            <BandSongsTab bandId={band.id} channelId={channelId} />
+          ) : (
+            <BandReviewsTab bandId={band.id} onSummary={handleSummary} />
+          )}
+        </div>
+      </section>
     </section>
+  );
+}
+
+function TabButton({ active, onClick, children }) {
+  return (
+    <button
+      onClick={onClick}
+      className={[
+        'px-3 py-1.5 rounded-md border text-sm',
+        active
+          ? 'bg-red-600 border-red-500 text-white'
+          : 'bg-white/5 border-white/10 text-white/80 hover:bg-white/10',
+      ].join(' ')}
+    >
+      {children}
+    </button>
   );
 }
