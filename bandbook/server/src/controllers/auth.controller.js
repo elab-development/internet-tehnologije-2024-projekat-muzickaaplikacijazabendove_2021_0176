@@ -59,7 +59,7 @@ export const register = async (req, res) => {
     if (!name || !email || !password) {
       return res
         .status(400)
-        .json({ error: 'Nedostaju polja: name, email, password' });
+        .json({ error: 'All fields required' });
     }
 
 // final avatar URL (from middleware if uploaded)
@@ -78,7 +78,7 @@ export const register = async (req, res) => {
   } catch (err) {
     return res
       .status(400)
-      .json({ error: err.message || 'Neuspešna registracija' });
+      .json({ error: err.message || 'Registration Failed' });
   }
 };
 
@@ -100,19 +100,19 @@ export const login = async (req, res) => {
     if (!email || !password) {
       return res
         .status(400)
-        .json({ error: 'Nedostaju polja: email, password' });
+        .json({ error: 'email and password are required' });
     }
     const user = await checkCredentials({
       email: sanitizeEmail(email),
       password: String(password),
     });
     if (!user) {
-      return res.status(401).json({ error: 'Pogrešan email ili lozinka' });
+      return res.status(401).json({ error: 'Invalid credentials' });
     }
     await setAuthCookie(res, user);
     return res.json({ user });
   } catch {
-    return res.status(500).json({ error: 'Greška pri logovanju' });
+    return res.status(500).json({ error: 'Login failed' });
   }
 };
 

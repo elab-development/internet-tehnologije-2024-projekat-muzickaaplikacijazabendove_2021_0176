@@ -32,6 +32,7 @@ model User {
   favorites    Favorite[] 
 
   @@index([email])
+  @@map("user")
 }
 
 model Band {
@@ -52,6 +53,7 @@ model Band {
   @@index([createdAt])
   @@index([category])
   @@fulltext([name, description])
+  @@map("band")
 }
 
 model Review {
@@ -70,6 +72,7 @@ model Review {
   @@index([userId])
   @@index([createdAt])
   @@unique([bandId, userId]) 
+  @@map("review")
 }
 
 model Favorite {
@@ -88,4 +91,5 @@ model Favorite {
   @@index([bandId])
   @@index([createdAt])
   @@unique([userId, bandId])
+  @@map("favorite")
 }
