@@ -1,13 +1,11 @@
 import { useEffect, useState, useCallback } from 'react';
 import { Heart, ExternalLink } from 'lucide-react';
-import { fetchChannelVideos } from '../lib/youtube.js';
+import { fetchChannelVideos } from '../lib/musicbrainz.js';
 import { api } from '../lib/api.js';
 import { useLoading } from '../context/LoadingContext.jsx';
 import { useAuth } from '../context/AuthContext.jsx';
 
-const PAGE_SIZE = 6;
-
-export default function BandSongsTab({ bandId, channelId }) {
+export default function BandSongsTab({ bandName, bandId, channelId }) {
   const { show, hide } = useLoading();
   const { authenticated } = useAuth();
 
@@ -35,13 +33,10 @@ export default function BandSongsTab({ bandId, channelId }) {
       setError('');
       show();
       try {
-        const data = await fetchChannelVideos(channelId, {
-          pageToken,
-          pageSize: PAGE_SIZE,
-        });
-        setVideos(data.items);
-        setNextToken(data.nextPageToken || '');
-        setPrevToken(data.prevPageToken || '');
+        const data = await fetchChannelVideos(bandName);
+        setVideos(data);
+        setNextToken('');
+        setPrevToken('');
       } catch (err) {
         setError(err.message || 'Failed to load videos.');
       } finally {
@@ -141,25 +136,9 @@ function VideoCard({ v, favorite, onToggle }) {
   const url = `https://www.youtube.com/watch?v=${v.videoId}`;
   return (
     <div className='rounded-xl border border-white/10 bg-white/5 overflow-hidden'>
-      <div className='h-40 w-full overflow-hidden border-b border-white/10'>
-        <img
-          src={v.thumbnail}
-          alt={v.title}
-          className='h-full w-full object-cover'
-        />
-      </div>
       <div className='p-3'>
         <h3 className='text-sm font-semibold line-clamp-2'>{v.title}</h3>
         <div className='mt-2 flex items-center justify-between text-xs text-white/60'>
-          <a
-            href={url}
-            target='_blank'
-            rel='noopener noreferrer'
-            className='inline-flex items-center gap-1 hover:text-red-400'
-          >
-            <ExternalLink className='h-3.5 w-3.5' />
-            Watch
-          </a>
           <button
             onClick={onToggle}
             className={[

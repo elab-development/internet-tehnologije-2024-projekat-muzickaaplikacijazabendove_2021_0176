@@ -182,7 +182,7 @@ export default function BandDetails() {
 
         <div>
           {tab === 'songs' ? (
-            <BandSongsTab bandId={band.id} channelId={channelId} />
+            <BandSongsTab bandName={name} bandId={band.id} channelId={channelId} />
           ) : (
             <BandReviewsTab bandId={band.id} onSummary={handleSummary} />
           )}
